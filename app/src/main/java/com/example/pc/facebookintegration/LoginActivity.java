@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         mFb = (Button) findViewById(R.id.fb);
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        List<String> permissionNeeds = Arrays.asList("user_photos", "email",
+        List<String> permissionNeeds = Arrays.asList("id","user_photos", "email",
                 "user_birthday", "public_profile", "AccessToken");
         loginButton.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -97,6 +97,16 @@ public class LoginActivity extends AppCompatActivity {
                                 "id,name,email,gender, birthday");
                         request.setParameters(parameters);
                         request.executeAsync();
+
+                        GraphRequest request1 = GraphRequest.newGraphPathRequest(loginResult.getAccessToken(), "/100028914904929/friends",new GraphRequest.Callback() {
+                            @Override
+                            public void onCompleted(GraphResponse response) {
+                                // Insert your code here
+                                System.out.println(response.getJSONArray());
+                            }
+                        });
+
+                        request1.executeAsync();
                     }
 
                     @Override
@@ -140,8 +150,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         // If the access token is available already assign it.
-
-
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(
@@ -153,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-
 
     }
 

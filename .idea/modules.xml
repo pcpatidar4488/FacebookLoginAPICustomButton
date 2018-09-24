@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FaceBookIntegration.iml" filepath="$PROJECT_DIR$/FaceBookIntegration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FacebookLoginAPICustomButton.iml" filepath="$PROJECT_DIR$/FacebookLoginAPICustomButton.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
