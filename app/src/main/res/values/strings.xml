@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FaceBookIntegration</string>
-    <string name="facebook_app_id">236878103663131</string>
-    <string name="fb_login_protocol_scheme">fb236878103663131</string>
+    <string name="facebook_app_id">288921888501787</string>
+    <string name="fb_login_protocol_scheme">fb288921888501787</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">fb288921888501787</string>
 
 </resources>

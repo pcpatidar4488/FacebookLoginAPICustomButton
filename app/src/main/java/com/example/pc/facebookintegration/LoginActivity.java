@@ -16,6 +16,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     AccessToken accessToken;
     AccessTokenTracker accessTokenTracker;
     ProfileTracker profileTracker;
-    private String id, name, email, gender, birthday;
+    private String id, name, email, gender, birthday,friends;
     Profile profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,120 +55,44 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         List<String> permissionNeeds = Arrays.asList("id","user_photos", "email",
                 "user_birthday", "public_profile", "AccessToken");
+        loginButton.setReadPermissions(EMAIL);
         loginButton.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         mFb.setText("Logout");
-                        System.out.println("onSuccess");
                         String accessToken = loginResult.getAccessToken().getToken();
-                        Log.i("accessToken", accessToken);
+                        Toast.makeText(LoginActivity.this, "Login", Toast.LENGTH_SHORT).show();
 
-                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                                new GraphRequest.GraphJSONObjectCallback() {
-                                    @Override
-                                    public void onCompleted(JSONObject object,
-                                                            GraphResponse response) {
-                                        try {
-                                            id = object.getString("id");
-                                            try {
-                                                URL profile_pic = new URL(
-                                                        "http://graph.facebook.com/" + id + "/picture?type=large");
-                                                Log.i("profile_pic",
-                                                        profile_pic + "");
-
-                                            } catch (MalformedURLException e) {
-                                                e.printStackTrace();
-                                            }
-                                            name = object.getString("name");
-                                            email = object.getString("email");
-                                            gender = object.getString("gender");
-                                            birthday = object.getString("birthday");
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Log.i("pppppppp ",
-                                                id + " " + name + " " + email + " " + gender + " " + birthday);
-                                    }
-
-
-                                });
-                        Bundle parameters = new Bundle();
-                        parameters.putString("fields",
-                                "id,name,email,gender, birthday");
-                        request.setParameters(parameters);
-                        request.executeAsync();
-
-                        GraphRequest request1 = GraphRequest.newGraphPathRequest(loginResult.getAccessToken(), "/100028914904929/friends",new GraphRequest.Callback() {
-                            @Override
-                            public void onCompleted(GraphResponse response) {
-                                // Insert your code here
-                                System.out.println(response.getJSONArray());
-                            }
-                        });
-
-                        request1.executeAsync();
                     }
 
                     @Override
                     public void onCancel() {
-                        System.out.println("onCancel");
+                        Toast.makeText(LoginActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         System.out.println("onError");
-                        Log.v("LoginActivity", exception.getCause().toString());
+                        Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        profile = Profile.getCurrentProfile().getCurrentProfile();
-        if (profile != null) {
-            // user has logged in
-            mFb.setText("Facebook");
+   /*     AccessToken accessToken = AccountKit.getCurrentAccessToken();
+
+        if (accessToken != null) {
+            //Handle Returning User
         } else {
-            // user has not logged in
-            mFb.setText("Facebook");
-        }
-
-        accessToken = AccessToken.getCurrentAccessToken();
-
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                // Set the access token using
-                // currentAccessToken when it's loaded or set.
-                if (AccessToken.getCurrentAccessToken()!=null){
-                    Toast.makeText(LoginActivity.this, "AccessToken", Toast.LENGTH_SHORT).show();
-                }else {
-                    LoginManager.getInstance().logOut();
-                    Toast.makeText(LoginActivity.this, "Logout", Toast.LENGTH_SHORT).show();
-                    mFb.setText("Facebook");
-                }
-            }
-        };
-        // If the access token is available already assign it.
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                // App code
-                if (Profile.getCurrentProfile()!=null){
-                    Toast.makeText(LoginActivity.this, Profile.getCurrentProfile().getFirstName(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+            //Handle new or logged out user
+        }*/
 
     }
 
     @Override
     protected void onStop() {
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
+       // accessTokenTracker.stopTracking();
+      //  profileTracker.stopTracking();
         super.onStop();
     }
 
